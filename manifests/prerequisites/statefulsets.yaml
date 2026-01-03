@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: auth-mysql
+  namespace: my-app-ns
+spec:
+  serviceName: auth-mysql-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-mysql
+  template:
+    metadata:
+      labels:
+        app: auth-mysql
+    spec:
+      containers:
+      - name: auth-mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: auth-mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: auth-mysql-secret
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: auth-mysql-secret
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: auth-mysql-secret
+              key: MYSQL_PASSWORD
+        volumeMounts:
+        - name: auth-mysql-storage
+          mountPath: /var/lib/mysql
+        - name: auth-mysql-init
+          mountPath: /docker-entrypoint-initdb.d
+        # command:
+        # - --default-authentication-plugin=mysql_native_password
+      volumes:
+      - name: auth-mysql-init
+        emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: auth-mysql-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 4Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: order-mysql
+  namespace: my-app-ns
+spec:
+  serviceName: order-mysql-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-mysql
+  template:
+    metadata:
+      labels:
+        app: order-mysql
+    spec:
+      containers:
+      - name: order-mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: order-mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: order-mysql-secret
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: order-mysql-secret
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: order-mysql-secret
+              key: MYSQL_PASSWORD
+        volumeMounts:
+        - name: order-mysql-storage
+          mountPath: /var/lib/mysql
+        - name: order-mysql-init
+          mountPath: /docker-entrypoint-initdb.d
+        # command:
+        # - --default-authentication-plugin=mysql_native_password
+      volumes:
+      - name: order-mysql-init
+        emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: order-mysql-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 4Gi

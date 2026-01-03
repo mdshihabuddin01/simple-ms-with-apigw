@@ -1,0 +1,11 @@
+# kong-values.yaml
+gateway:
+  env:
+    # "bundled" includes serverless-pre-function, rate-limiting, proxy-cache, etc.
+    plugins: "bundled" 
+    untrusted_lua_sandbox_requires: "resty.http"
+
+deployment:
+  ingressController:
+    enabled: true
+    installDerivatives: true

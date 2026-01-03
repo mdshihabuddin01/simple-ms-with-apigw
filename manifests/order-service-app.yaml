@@ -1,0 +1,44 @@
+apiVersion: apps.example.com/v1alpha1
+kind: Application
+metadata:
+  name: order-service-application
+  namespace: my-app-ns
+spec:
+  replicas: 1
+  image: codedapp/order:1
+  containerPort: 8082
+  service:
+    type: ClusterIP
+    # This list maps to []corev1.ServicePort
+    port: 8082
+    annotations:
+      example.com/annotation: "value"
+      konghq.com/plugins: validate-via-auth-service
+  ingress:
+    path: /api/v1/orders
+    annotations:
+      kubernetes.io/ingress.class: kong
+  envVars:
+    - name: CM_ORDER_DATABASE_HOST
+      value: "order-mysql-service"
+    - name: SEC_ORDER_DATABASE_USERNAME
+      value: "order_user"
+    - name: SEC_ORDER_DATABASE_DBNAME
+      value: "order_db"
+    - name: SEC_ORDER_DATABASE_PORT
+      value: "3306"
+    - name: CM_ORDER_JWT_EXPIRATION_TIME
+      value: "24"
+    - name: ORDER_SERVER_HOST
+      value: "0.0.0.0"
+    - name: ORDER_SERVER_PORT
+      value: "8082"
+    # - name: PROMETHEUS_PORT
+    #   value: "9091"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
