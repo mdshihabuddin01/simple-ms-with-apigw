@@ -30,7 +30,7 @@ type ApplicationSpec struct {
 	Replicas *int32 `json:"replicas,omitempty"`
 
 	// +optional
-	Image *string `json:"image,omitempty"`
+	Image *string `json:"image"`
 
 	ContainerPort int32 `json:"containerPort"`
 
@@ -77,9 +77,9 @@ type ResourcesSpec struct {
 
 type ResourceLimits struct {
 	// +optional
-	CPU string `json:"cpu,omitempty"`
+	CPU string `json:"cpu"`
 	// +optional
-	Memory string `json:"memory,omitempty"`
+	Memory string `json:"memory"`
 }
 
 type TLS struct {
@@ -90,7 +90,7 @@ type TLS struct {
 	Issuer *Issuer `json:"issuer,omitempty"`
 }
 type Issuer struct {
-	ACMEIssuer acmeissuerv1.ACMEIssuer `json:"acmeIssuer,omitempty"`
+	ACMEIssuer acmeissuerv1.ACMEIssuer `json:"acmeIssuer"`
 }
 
 // ApplicationStatus defines the observed state of Application.
