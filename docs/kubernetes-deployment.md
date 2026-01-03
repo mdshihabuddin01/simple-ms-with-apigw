@@ -38,6 +38,15 @@ helm install cert-manager ./cert-manager \
 
 ```
 
+### 3. monitoring-operator 
+
+Install kube-prometheus-stack for APM
+```bash
+helm upgrade -i monitoring-stack-operator ./monitoring-operator \                     
+  --namespace app-engine --create-namespace -f helm-values/monitoring-operator-values.yaml
+
+```
+
 ---
 
 ## 🚦 Phase 2: API Gateway & Operator
@@ -94,8 +103,22 @@ kubectl apply -f order-service-app.yaml
 
 ```
 
----
+### 3. Deploy Monitoring
 
+Finally, deploy the prometheus services monitor
+
+```bash
+kubectl apply -f auth-app-monitor.yaml
+kubectl apply -f order-app-monitor.yaml
+```
+Service monitor discovers service by service label, in our example we used `app: auth-service-application` which is the label
+of `auth-service-application-setvice`. prometheus scraps metrics from `/metrics` and listens in the same port as application for 
+`auth-service` port is 8081 and `order-service` port is 8082
+
+Grafana dashboard jsons were exported in the helm chart, so you can visit the dashboard right after the deployment, you can explore them 
+in the `backend/monitoring/dashboards` directory for watching or importing manually.
+
+As it will not be exposed by ingress, you can port-forward the prometheus and grafana service or change it to load-balancer or node-port.
 ## ✅ Verification Checklist
 
 | Resource | Namespace | Command to Verify |

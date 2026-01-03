@@ -1,0 +1,21 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: rate-limit-basic
+  namespace: my-app-ns
+config:
+  minute: 100
+  policy: local          # Stores counters in Kong Pod RAM
+  fault_tolerant: true
+plugin: rate-limiting
+
+
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: cleanup-headers
+config:
+  remove:
+    headers: ["x-debug-mode", "x-user-id"]
+plugin: request-transformer

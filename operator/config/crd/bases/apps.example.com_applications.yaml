@@ -3785,6 +3785,8 @@ spec:
                         - privateKeySecretRef
                         - server
                         type: object
+                    required:
+                    - acmeIssuer
                     type: object
                 required:
                 - enable

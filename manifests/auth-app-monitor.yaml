@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: auth-app-monitor
+  namespace: app-engine
+  labels:
+    # ADD THE LABEL PROMETHEUS IS LOOKING FOR HERE
+    release: monitoring-stack
+spec:
+  # This matches ANY service with this label in the allowed namespaces
+  selector:
+    matchLabels:
+      app: auth-service-application
+  namespaceSelector:
+    matchNames:
+      - my-app-ns
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+
+    

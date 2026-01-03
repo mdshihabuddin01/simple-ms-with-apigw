@@ -71,13 +71,13 @@ func main() {
 			auth.POST("/register", authHandler.Register)
 			auth.POST("/login", authHandler.Login)
 			auth.GET("/validate", authHandler.ValidateToken)
-			auth.GET("/users/:id", authHandler.GetUser)
+			//auth.GET("/users/:id", authHandler.GetUser)
 		}
 	}
 
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"status": "healthy",
+			"status":  "healthy",
 			"service": "auth-service",
 		})
 	})
@@ -85,14 +85,13 @@ func main() {
 	// Prometheus metrics endpoint
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
-
 	// var wg sync.WaitGroup
 	// wg.Add(1)
 	// go func() {
 	// 	defer wg.Done()
 	// 	metricsRouter := gin.New()
 	// 	metricsRouter.GET("/metrics", gin.WrapH(promhttp.Handler()))
-		
+
 	// 	log.Printf("Order service metrics starting on %s", cfg.GetPrometheusAddr())
 	// 	if err := metricsRouter.Run(cfg.GetPrometheusAddr()); err != nil {
 	// 		log.Printf("Failed to start metrics server: %v", err)
