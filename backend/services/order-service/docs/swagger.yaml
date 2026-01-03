@@ -1,0 +1,260 @@
+basePath: /api/v1
+definitions:
+  handlers.GenericErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handlers.GenericSuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handlers.GetOrdersResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+    type: object
+  models.Order:
+    properties:
+      created_at:
+        type: string
+      currency:
+        type: string
+      id:
+        type: integer
+      order_items:
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
+      order_number:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.OrderItem:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      order_id:
+        type: integer
+      product_id:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        type: integer
+      total_price:
+        type: number
+      unit_price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  services.CreateOrderItemRequest:
+    properties:
+      product_id:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        minimum: 1
+        type: integer
+      unit_price:
+        minimum: 0
+        type: number
+    required:
+    - product_id
+    - product_name
+    - quantity
+    - unit_price
+    type: object
+  services.CreateOrderRequest:
+    properties:
+      order_items:
+        items:
+          $ref: '#/definitions/services.CreateOrderItemRequest'
+        minItems: 1
+        type: array
+    required:
+    - order_items
+    type: object
+  services.UpdateOrderRequest:
+    properties:
+      status:
+        enum:
+        - pending
+        - confirmed
+        - shipped
+        - delivered
+        - cancelled
+        type: string
+    required:
+    - status
+    type: object
+host: localhost:8082
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for a order service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Order Service API
+  version: "1.0"
+paths:
+  /orders:
+    get:
+      description: Get all orders for the authenticated user
+      parameters:
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.GetOrdersResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.GenericErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all orders for the authenticated user
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new order for the authenticated user
+      parameters:
+      - description: Create Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/services.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.GenericErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new order
+      tags:
+      - orders
+  /orders/{id}:
+    delete:
+      description: Delete an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.GenericSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.GenericErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete an order
+      tags:
+      - orders
+    get:
+      description: Get an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.GenericErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get an order by ID
+      tags:
+      - orders
+    put:
+      consumes:
+      - application/json
+      description: Update an order's status
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.GenericErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an order
+      tags:
+      - orders
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
