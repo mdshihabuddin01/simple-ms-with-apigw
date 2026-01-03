@@ -19,7 +19,7 @@ Optional: Install this only if Horizontal Pod Autoscaling (HPA) and advanced res
 ```bash
 helm install metrics-server metrics-server/metrics-server \
   --namespace kube-system \
-  -f helm-values/metrics-values.yaml
+  -f helm-values/metrics-server-values.yaml
 
 ```
 
@@ -30,7 +30,7 @@ We use `cert-manager` to handle TLS encryption and manage `Issuer` resources req
 ```bash
 # Install base dependencies
 helm install dependent-manifests ./dependent-manifests \
-  --namespace app-engine --create-namespace
+  --namespace app-engine --create-namespace -f helm-values/dependent-manifsts-values.yaml
 
 # Install the Certificate Manager
 helm install cert-manager ./cert-manager \
@@ -70,7 +70,7 @@ The brain of our system that reconciles our custom application specs.
 
 ```bash
 helm install app-operator ./app-operator-helm-chart \
-  --namespace app-engine --create-namespace
+  --namespace app-engine --create-namespace -f helm-values/app-operator-values.yaml
 
 ```
 
@@ -103,6 +103,11 @@ kubectl apply -f order-service-app.yaml
 
 ```
 
+Go to `manifests/kong-plugins` directory. Deploy kong plugins for proper application routing and security
+```bash
+kubectl apply -f validate-via-auth-service-plugin.yaml
+```
+
 ### 3. Deploy Monitoring
 
 Finally, deploy the prometheus services monitor
@@ -112,8 +117,7 @@ kubectl apply -f auth-app-monitor.yaml
 kubectl apply -f order-app-monitor.yaml
 ```
 Service monitor discovers service by service label, in our example we used `app: auth-service-application` which is the label
-of `auth-service-application-setvice`. prometheus scraps metrics from `/metrics` and listens in the same port as application for 
-`auth-service` port is 8081 and `order-service` port is 8082
+of `auth-service-application-setvice`. prometheus scraps metrics from `/metrics` and listens in the application port
 
 Grafana dashboard jsons were exported in the helm chart, so you can visit the dashboard right after the deployment, you can explore them 
 in the `backend/monitoring/dashboards` directory for watching or importing manually.

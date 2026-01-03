@@ -10,20 +10,6 @@ This document provides comprehensive API documentation for the Auth Service and 
 - **Auth Service**: `http://localhost:8081` (direct)
 - **Order Service**: `http://localhost:8082` (direct)
 
-## Authentication
-
-All order endpoints require JWT authentication. Include the following headers:
-
-```
-Authorization: Bearer <jwt_token>
-```
-**Headers for direct access order service**
-```
-X-User-ID: <user_id>
-```
-
-
-
 ## Auth Service Endpoints
 
 ### 1. Register User
@@ -129,6 +115,19 @@ Authorization: Bearer <jwt_token>
 
 
 ## Order Service Endpoints
+
+## Authentication
+**Headers for accessing with API gateway**
+
+All order endpoints require JWT authentication. Ensure that API gateway rules properly configured.Include the following headers:
+
+```
+Authorization: Bearer <jwt_token>
+```
+**Headers for direct access order service**
+```
+X-User-ID: <user_id>
+```
 
 ### 1. Create Order
 
