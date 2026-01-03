@@ -1,0 +1,57 @@
+apiVersion: apps.example.com/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app.kubernetes.io/name: app-system-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: nginx-application
+  namespace: my-app-ns  # Optional: specify namespace if needed
+spec:
+  # Optional: Number of replicas for the deployment
+  replicas: 1
+  # Optional: Container image to use
+  image: nginx:latest
+  # Required: Port the container listens on
+  containerPort: 80
+  # Optional: Service configuration
+  service:
+    port: 80
+    type: ClusterIP
+    # Optional: Annotations for the service
+    annotations:
+      example.com/annotation: "value"
+  # Optional: Ingress configuration
+  # ingress:
+  #   # host: nginx.example.com
+  #   path: /ng
+  #   # Optional: Annotations for the ingress
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/rewrite-target: /
+  # Optional: Environment variables for the container
+  envVars:
+    - name: CM_ENV_VAR_1
+      value: "value1"
+    - name: ENV_VAR_2
+      value: "value2"
+  # Optional: Resource requests and limits
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+  # Optional: TLS configuration
+  # tls:
+  #   enable: true
+  #   issuer:
+  #     acmeIssuer:
+  #       # Example ACME issuer configuration (adjust as needed)
+  #       server: https://acme-v02.api.letsencrypt.org/directory
+  #       email: user@example.com
+  #       privateKeySecretRef:
+  #         name: letsencrypt-prod
+  #       solvers:
+  #         - http01:
+  #             ingress:
+  #               class: nginx

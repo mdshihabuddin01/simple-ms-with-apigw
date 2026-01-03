@@ -1,0 +1,18 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/operator/bin
+testbin/*
+Dockerfile.cross
+# Test binary, build with `go test -c`
+*.test
+*.out
+
+
+# editor and IDE paraphernalia
+.idea
+.vscode
+/operator/vendor/*
