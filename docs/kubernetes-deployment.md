@@ -42,8 +42,10 @@ helm install cert-manager ./cert-manager \
 
 Install kube-prometheus-stack for APM
 ```bash
-helm upgrade -i monitoring-stack-operator ./monitoring-operator \                     
-  --namespace app-engine --create-namespace -f helm-values/monitoring-operator-values.yaml
+helm upgrade --install monitoring-stack-operator ./monitoring-operator \
+  --namespace app-engine \
+  --create-namespace \
+  -f helm-values/monitoring-operator-values.yaml
 
 ```
 
@@ -94,7 +96,7 @@ kubectl apply -f .
 
 ### 2. Deploy Microservices
 
-Finally, deploy the core services: the **Authentication Service (Auth)** and the **Order Management System (OMS)**.
+Finally, deploy the core services: the **Authentication Service (Auth)** and the **Order Management System (OMS)**. You can use the default images from the manifests.
 
 ```bash
 cd .. # Back to the parent prerequisites folder
@@ -102,12 +104,15 @@ kubectl apply -f auth-service-app.yaml
 kubectl apply -f order-service-app.yaml
 
 ```
-
-Go to `manifests/kong-plugins` directory. Deploy kong plugins for proper application routing and security
+**Note:** We will use `konghq.com/plugins: validate-via-auth-service` annotation in order-service-app.yaml's service section, and 
+`cert-manager.io/cluster-issuer: "cluster-issuer-name"` in auth-service.yaml's ingress section.
+Go to `manifests/kong-plugins` directory.
+Deploy kong plugins for proper application routing and security
 ```bash
 kubectl apply -f validate-via-auth-service-plugin.yaml
 ```
-
+If you want to enable tls, uncomment tls section with appropriate values (including your host in the ingress section) and reapply the manifest. Update the ingress section annotation with the real `clusterissuer` name what 
+you can find by using  `k get ClusterIssuer -A`
 ### 3. Deploy Monitoring
 
 Finally, deploy the prometheus services monitor

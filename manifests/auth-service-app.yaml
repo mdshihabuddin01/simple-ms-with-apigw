@@ -9,14 +9,15 @@ spec:
   containerPort: 8081
   service:
     type: ClusterIP
-    # This list maps to []corev1.ServicePort
     port: 8081
     annotations:
       example.com/annotation: "value"
   ingress:
+#    host: abbaia.examp.local
     path: /api/v1/auth
     annotations:
       kubernetes.io/ingress.class: kong
+#      cert-manager.io/cluster-issuer: "cluster-issuer-name"
   envVars:
     - name: CM_AUTH_DATABASE_HOST
       value: "auth-mysql-service"
@@ -41,16 +42,16 @@ spec:
     limits:
       cpu: "200m"
       memory: "256Mi"
-  # tls:
-  #   enable: true
-  #   issuer:
-  #     acmeIssuer:
-  #       # Example ACME issuer configuration (adjust as needed)
-  #       server: https://acme-v02.api.letsencrypt.org/directory
-  #       email: user@example.com
-  #       privateKeySecretRef:
-  #         name: app-system-letsencrypt-prod
-  #       solvers:
-  #         - http01:
-  #             ingress:
-  #               class: kong
+#  tls:
+#     enable: true
+#     issuer:
+#       acmeIssuer:
+#         # Example ACME issuer configuration (adjust as needed)
+#         server: https://acme-v02.api.letsencrypt.org/directory
+#         email: userabu@outlook.com
+#         privateKeySecretRef:
+#           name: app-system-letsencrypt-prod
+#         solvers:
+#           - http01:
+#               ingress:
+#                 class: kong

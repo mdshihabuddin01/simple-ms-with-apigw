@@ -9,10 +9,8 @@ spec:
   containerPort: 8082
   service:
     type: ClusterIP
-    # This list maps to []corev1.ServicePort
     port: 8082
     annotations:
-      example.com/annotation: "value"
       konghq.com/plugins: validate-via-auth-service
   ingress:
     path: /api/v1/orders
