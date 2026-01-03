@@ -1,0 +1,12 @@
+# Equivalent to getMonitoringHelmValues
+grafana:
+  enabled: true
+  adminPassword: "pass"  # monitoringAttributeValues.AdminPassword
+
+#prometheus:
+#  prometheusSpec:
+#    # This tells Prometheus to look for ServiceMonitors with specific labels
+#    serviceMonitorSelectorNilUsesHelmValues: false
+#    serviceMonitorSelector:
+#      matchLabels:
+#        release: prometheus
