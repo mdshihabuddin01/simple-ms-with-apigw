@@ -942,7 +942,7 @@ alertmanager:
 grafana:
   enabled: true
 
-  namespaceOverride: "core-ns"
+#  namespaceOverride: "core-ns"
 
   image:
     # tag: 9.5.17

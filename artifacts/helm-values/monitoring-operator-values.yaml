@@ -10,3 +10,18 @@ grafana:
 #    serviceMonitorSelector:
 #      matchLabels:
 #        release: prometheus
+
+prometheus:
+  prometheusSpec:
+    # 1. Allow Prometheus to find ServiceMonitors in ANY namespace
+    serviceMonitorNamespaceSelector: {}
+    # 2. Ignore specific label matching (matches all ServiceMonitors)
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+    # Do the same for PodMonitors if you use them
+    podMonitorNamespaceSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+
+    # Optional: If you want Prometheus to discover ScrapeConfigs in all namespaces
+    scrapeConfigNamespaceSelector: {}
+    scrapeConfigSelectorNilUsesHelmValues: false
