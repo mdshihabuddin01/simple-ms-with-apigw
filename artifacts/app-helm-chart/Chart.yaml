@@ -1,0 +1,16 @@
+apiVersion: v2
+name: app-system-operator
+description: A Helm chart for app-system-operator
+type: application
+version: 0.1.0
+appVersion: "4.0.8"
+keywords:
+  - operator
+  - kubernetes
+  - application
+home: https://github.com/example/app-system-operator
+sources:
+  - https://github.com/example/app-system-operator
+maintainers:
+  - name: DevOps Team
+    email: devops@example.com

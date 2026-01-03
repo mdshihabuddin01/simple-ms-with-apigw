@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: app-system-operator
+    control-plane: controller-manager
+  name: app-system-operator-controller-manager-metrics-service
+  namespace: {{ default "app-engine" .Release.Namespace }}
+spec:
+  ports:
+  - name: https
+    port: 8443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    app.kubernetes.io/name: app-system-operator
+    control-plane: controller-manager
