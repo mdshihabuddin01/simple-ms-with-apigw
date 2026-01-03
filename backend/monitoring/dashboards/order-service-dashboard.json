@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": "shared_crosshair",
-  "id": null,
+  "id": 37,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -33,6 +33,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -42,8 +45,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -74,7 +79,8 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "reqps",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -89,7 +95,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -102,7 +109,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (method, exported_endpoint)",
+          "expr": "sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (method, exported_endpoint)",
           "interval": "",
           "legendFormat": "{{method}} {{exported_endpoint}}",
           "refId": "A"
@@ -135,7 +142,8 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "s",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -158,16 +166,18 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(auth_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
+          "expr": "histogram_quantile(0.95, sum(rate(order_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
           "interval": "",
           "legendFormat": "95th percentile",
           "refId": "A"
@@ -187,6 +197,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -196,8 +209,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -228,7 +243,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -243,7 +259,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -256,7 +273,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\", status=~\"4..\"}[5m])) by (exported_endpoint) / sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (exported_endpoint)",
+          "expr": "sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\", status=~\"4..\"}[5m])) by (exported_endpoint) / sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (exported_endpoint)",
           "interval": "",
           "legendFormat": "4xx - {{exported_endpoint}}",
           "refId": "A"
@@ -266,7 +283,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\", status=~\"5..\"}[5m])) by (exported_endpoint) / sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (exported_endpoint)",
+          "expr": "sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\", status=~\"5..\"}[5m])) by (exported_endpoint) / sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (exported_endpoint)",
           "interval": "",
           "legendFormat": "5xx - {{exported_endpoint}}",
           "refId": "B"
@@ -286,6 +303,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -295,8 +315,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -327,7 +349,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -342,7 +365,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -355,7 +379,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(auth_http_requests_in_flight{job=~\"$job\", instance=~\"$instance\"}) by (exported_endpoint)",
+          "expr": "sum(order_http_requests_in_flight{job=~\"$job\", instance=~\"$instance\"}) by (exported_endpoint)",
           "interval": "",
           "legendFormat": "{{exported_endpoint}}",
           "refId": "A"
@@ -375,6 +399,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -384,8 +411,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -416,7 +445,8 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "s",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -431,7 +461,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -444,7 +475,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(auth_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
+          "expr": "histogram_quantile(0.50, sum(rate(order_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
           "interval": "",
           "legendFormat": "50th percentile - {{method}} {{exported_endpoint}}",
           "refId": "A"
@@ -454,7 +485,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(auth_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
+          "expr": "histogram_quantile(0.95, sum(rate(order_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
           "interval": "",
           "legendFormat": "95th percentile - {{method}} {{exported_endpoint}}",
           "refId": "B"
@@ -464,7 +495,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "histogram_quantile(0.99, sum(rate(auth_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
+          "expr": "histogram_quantile(0.99, sum(rate(order_http_request_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, method, exported_endpoint))",
           "interval": "",
           "legendFormat": "99th percentile - {{method}} {{exported_endpoint}}",
           "refId": "C"
@@ -484,6 +515,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -493,8 +527,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -525,7 +561,8 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "s",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -540,7 +577,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -553,7 +591,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(auth_database_query_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, operation))",
+          "expr": "histogram_quantile(0.95, sum(rate(order_database_query_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, operation))",
           "interval": "",
           "legendFormat": "95th percentile - {{operation}}",
           "refId": "A"
@@ -563,7 +601,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(auth_database_query_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, operation))",
+          "expr": "histogram_quantile(0.50, sum(rate(order_database_query_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[5m])) by (le, operation))",
           "interval": "",
           "legendFormat": "50th percentile - {{operation}}",
           "refId": "B"
@@ -583,6 +621,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -592,8 +633,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -615,8 +658,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -624,7 +666,8 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "reqps",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -639,7 +682,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -652,13 +696,13 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(auth_tokens_issued_total{job=~\"$job\", instance=~\"$instance\"}[5m])",
+          "expr": "rate(orders_created_total{job=~\"$job\", instance=~\"$instance\"}[5m])",
           "interval": "",
-          "legendFormat": "Tokens issued per second",
+          "legendFormat": "Orders created per second",
           "refId": "A"
         }
       ],
-      "title": "Token Issuance Rate",
+      "title": "Order Creation Rate",
       "type": "timeseries"
     },
     {
@@ -676,8 +720,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -685,7 +728,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -708,22 +752,24 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "increase(auth_tokens_issued_total{job=~\"$job\", instance=~\"$instance\"}[1h])",
+          "expr": "increase(orders_created_total{job=~\"$job\", instance=~\"$instance\"}[1h])",
           "interval": "",
-          "legendFormat": "Tokens issued in last hour",
+          "legendFormat": "Orders created in last hour",
           "refId": "A"
         }
       ],
-      "title": "Tokens Issued (Last Hour)",
+      "title": "Orders Created (Last Hour)",
       "type": "stat"
     },
     {
@@ -737,6 +783,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -746,8 +795,10 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -769,8 +820,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -778,7 +828,8 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "reqps",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -793,7 +844,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -806,7 +858,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (status)",
+          "expr": "sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (status)",
           "interval": "",
           "legendFormat": "Status {{status}}",
           "refId": "A"
@@ -829,10 +881,12 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             }
           },
-          "mappings": []
+          "mappings": [],
+          "unitScale": true
         },
         "overrides": []
       },
@@ -846,7 +900,8 @@
       "options": {
         "legend": {
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -867,7 +922,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(auth_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (exported_endpoint)",
+          "expr": "sum(rate(order_http_requests_total{job=~\"$job\", instance=~\"$instance\"}[5m])) by (exported_endpoint)",
           "interval": "",
           "legendFormat": "{{exported_endpoint}}",
           "refId": "A"
@@ -890,10 +945,12 @@
             "hideFrom": {
               "legend": false,
               "tooltip": false,
-              "vis": false
+              "vis": false,
+              "viz": false
             }
           },
-          "mappings": []
+          "mappings": [],
+          "unitScale": true
         },
         "overrides": []
       },
@@ -907,7 +964,8 @@
       "options": {
         "legend": {
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -928,7 +986,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(auth_database_query_duration_seconds_count{job=~\"$job\", instance=~\"$instance\"}[5m])) by (operation)",
+          "expr": "sum(rate(order_database_query_duration_seconds_count{job=~\"$job\", instance=~\"$instance\"}[5m])) by (operation)",
           "interval": "",
           "legendFormat": "{{operation}}",
           "refId": "A"
@@ -939,11 +997,10 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 27,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [
-    "auth",
-    "authentication",
+    "order",
+    "orders",
     "prometheus",
     "go"
   ],
@@ -952,7 +1009,7 @@
       {
         "current": {
           "selected": false,
-          "text": "prometheus",
+          "text": "Prometheus",
           "value": "prometheus"
         },
         "hide": 0,
@@ -970,14 +1027,14 @@
       {
         "current": {
           "selected": false,
-          "text": "auth-service-application-service",
-          "value": "auth-service-application-service"
+          "text": "order-service-application-service",
+          "value": "order-service-application-service"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(auth_http_requests_total, job)",
+        "definition": "label_values(order_http_requests_total, job)",
         "hide": 0,
         "includeAll": true,
         "label": "Job",
@@ -985,7 +1042,7 @@
         "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(auth_http_requests_total, job)",
+          "query": "label_values(order_http_requests_total, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1004,7 +1061,7 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(auth_http_requests_total{job=~\"$job\"}, instance)",
+        "definition": "label_values(order_http_requests_total{job=~\"$job\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": "Instance",
@@ -1012,7 +1069,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(auth_http_requests_total{job=~\"$job\"}, instance)",
+          "query": "label_values(order_http_requests_total{job=~\"$job\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1029,7 +1086,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Auth Service Dashboard",
-  "uid": "auth-service",
-  "version": 1
+  "title": "Order Service Dashboard",
+  "uid": "order-service-production",
+  "version": 2,
+  "weekStart": ""
 }
