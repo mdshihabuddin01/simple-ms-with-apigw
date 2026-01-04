@@ -28,7 +28,7 @@ helm install metrics-server metrics-server/metrics-server \
 We use `cert-manager` to handle TLS encryption and manage `Issuer` resources required by our Custom Resources.
 
 ```bash
-# Install base dependencies
+# Install prerequisite CRDs for other helm charts like cert-manager or monitoring-operator 
 helm install dependent-manifests ./dependent-manifests \
   --namespace app-engine --create-namespace -f helm-values/dependent-manifsts-values.yaml
 
@@ -96,7 +96,7 @@ kubectl apply -f .
 
 ### 2. Deploy Microservices
 
-Finally, deploy the core services: the **Authentication Service (Auth)** and the **Order Management System (OMS)**. You can use the default images from the manifests.
+Deploy the core services: the **Authentication Service (Auth)** and the **Order Management System (OMS)**. You can use the default images from the manifests.
 
 ```bash
 cd .. # Back to the parent prerequisites folder
@@ -105,9 +105,9 @@ kubectl apply -f order-service-app.yaml
 
 ```
 **Note:** We will use `konghq.com/plugins: validate-via-auth-service` annotation in order-service-app.yaml's service section, and 
-`cert-manager.io/cluster-issuer: "cluster-issuer-name"` in auth-service.yaml's ingress section.
-Go to `manifests/kong-plugins` directory.
-Deploy kong plugins for proper application routing and security
+`cert-manager.io/cluster-issuer: "cluster-issuer-name"` in auth-service.yaml's ingress section. In the env section, prefix `CM` sets 
+the env as configmap data, `SEC` sets as secret data but removes the prefix before placing.
+Go to `manifests/kong-plugins` directory. Deploy kong plugins for proper application routing and security
 ```bash
 kubectl apply -f validate-via-auth-service-plugin.yaml
 ```
@@ -125,9 +125,7 @@ Service monitor discovers service by service label, in our example we used `app:
 of `auth-service-application-setvice`. prometheus scraps metrics from `/metrics` and listens in the application port
 
 Grafana dashboard jsons were exported in the helm chart, so you can visit the dashboard right after the deployment, you can explore them 
-in the `backend/monitoring/dashboards` directory for watching or importing manually.
-
-As it will not be exposed by ingress, you can port-forward the prometheus and grafana service or change it to load-balancer or node-port.
+in the `backend/monitoring/dashboards` directory for watching or importing manually. Search dashboards with `auth` or `order` keywords in grafana. As it will not be exposed by ingress, you can port-forward the prometheus and grafana service or change it to load-balancer or node-port.
 ## ✅ Verification Checklist
 
 | Resource | Namespace | Command to Verify |
