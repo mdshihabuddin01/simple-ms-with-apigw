@@ -1,0 +1,36 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: validate-via-auth-service
+  namespace: my-app-ns
+config:
+  access:
+    - |
+      local status, http = pcall(require, "resty.http")
+      if not status then
+          ngx.status = 500
+          ngx.say("Configuration Error: resty.http not found in Kong")
+          return ngx.exit(500)
+      end
+
+      local client = http.new()
+      -- Try/Catch the request to prevent crashes
+      local res, err = client:request_uri("http://auth-service-application-service.my-app-ns.svc.cluster.local:8081/api/v1/auth/validate", {
+          method = "GET",
+          headers = { ["Authorization"] = ngx.var.http_authorization }
+      })
+
+      if not res then
+          ngx.status = 500
+          ngx.say("Auth Service Unreachable: " .. (err or "unknown error"))
+          return ngx.exit(500)
+      end
+
+      if res.status ~= 200 then
+          ngx.status = 401
+          ngx.say("Unauthorized")
+          return ngx.exit(401)
+      end
+
+      ngx.req.set_header("X-User-ID", res.headers["X-User-ID"])
+plugin: pre-function

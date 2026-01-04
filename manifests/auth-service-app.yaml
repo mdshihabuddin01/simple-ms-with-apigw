@@ -1,0 +1,57 @@
+apiVersion: apps.example.com/v1alpha1
+kind: Application
+metadata:
+  name: auth-service-application
+  namespace: my-app-ns
+spec:
+  replicas: 1
+  image: codedapp/auth:1
+  containerPort: 8081
+  service:
+    type: ClusterIP
+    port: 8081
+    annotations:
+      example.com/annotation: "value"
+  ingress:
+#    host: abbaia.examp.local
+    path: /api/v1/auth
+    annotations:
+      kubernetes.io/ingress.class: kong
+#      cert-manager.io/cluster-issuer: "cluster-issuer-name"
+  envVars:
+    - name: CM_AUTH_DATABASE_HOST
+      value: "auth-mysql-service"
+    - name: SEC_AUTH_DATABASE_USERNAME
+      value: "auth_user"
+    - name: SEC_AUTH_DATABASE_DBNAME
+      value: "auth_db"
+    - name: SEC_AUTH_DATABASE_PORT
+      value: "3306"
+    - name: CM_AUTH_JWT_EXPIRATION_TIME
+      value: "24"
+    - name: AUTH_SERVER_HOST
+      value: "0.0.0.0"
+    - name: AUTH_SERVER_PORT
+      value: "8081"
+    # - name: PROMETHEUS_PORT
+    #   value: "9091"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+#  tls:
+#     enable: true
+#     issuer:
+#       acmeIssuer:
+#         # Example ACME issuer configuration (adjust as needed)
+#         server: https://acme-v02.api.letsencrypt.org/directory
+#         email: userabu@outlook.com
+#         privateKeySecretRef:
+#           name: app-system-letsencrypt-prod
+#         solvers:
+#           - http01:
+#               ingress:
+#                 class: kong

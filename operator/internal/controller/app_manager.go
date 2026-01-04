@@ -32,11 +32,27 @@ import (
 func (r *ApplicationReconciler) updateStatus(ctx context.Context, app *appsv1alpha1.Application) error {
 	// Update status with conditions
 	condition := metav1.Condition{
-		Type:               "Available",
-		Status:             metav1.ConditionTrue,
+		Type:               "NotReady",
+		Status:             metav1.ConditionFalse,
 		LastTransitionTime: metav1.Now(),
-		Reason:             "Reconciled",
+		Reason:             "DeploymentResourceNotReady",
 		Message:            "Application resources successfully reconciled",
+	}
+
+	dp := &appsv1.Deployment{}
+	err := r.Get(ctx, types.NamespacedName{Name: r.getDeploymentName(app), Namespace: app.Namespace}, dp)
+
+	if err != nil {
+		if !kerr.IsNotFound(err) {
+			return err
+		}
+		condition.Reason = "DeploymentNotFound"
+	} else {
+		if dp.Status.AvailableReplicas == dp.Status.ReadyReplicas {
+			condition.Type = "Ready"
+			condition.Reason = "DeploymentReady"
+			condition.Status = metav1.ConditionTrue
+		}
 	}
 
 	if len(app.Status.Conditions) == 0 || app.Status.Conditions[0].Type != condition.Type {

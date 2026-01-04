@@ -1,0 +1,5 @@
+# Equivalent to getMetricsServerHelmValues
+args:
+  - --kubelet-insecure-tls
+#  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+  # attributes.Args will be injected here

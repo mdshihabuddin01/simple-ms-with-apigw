@@ -1,0 +1,5 @@
+appOperator:
+  replicaCount: 1
+  image:
+    repository: codedapp/app-op
+    tag: "1"
